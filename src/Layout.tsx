@@ -44,9 +44,6 @@ export default function Layout({ user, onLogout }: Props) {
       <header className="dash-header">
         <div className="dash-header-left">
           <img src={images.logo} alt="logo" className="dash-logo-img" />
-          {user.role === 'owner' && (
-            <span className="dash-shop-name">🏪 {user.username}'s Shop</span>
-          )}
         </div>
 
         <div className="dash-header-right">
@@ -77,7 +74,12 @@ export default function Layout({ user, onLogout }: Props) {
           </div>
         </div>
       </header>
-
+      {user.role === 'owner' && (
+        <div className="dash-shop-bar">
+          <img src={images.logo} alt="shop logo" className="dash-shop-logo" />
+          <span className="dash-shop-name">{"Asian Paints Villupuram, 605602"}</span>
+        </div>
+      )}
       <main className="dash-main">
         <Outlet />
       </main>

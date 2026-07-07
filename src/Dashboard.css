@@ -121,6 +121,18 @@
   background: hsl(var(--primary) / 0.08);
   padding: 6px 20px;
   border-bottom: 1px solid hsl(var(--border));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dash-shop-logo {
+  height: 28px;
+  width: 28px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid hsl(var(--primary) / 0.3);
 }
 
 .dash-shop-name {

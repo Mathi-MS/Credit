@@ -5,6 +5,9 @@ import Layout from './Layout'
 import Dashboard from './Dashboard'
 import ProfilePage from './ProfilePage'
 import ActivityPage from './ActivityPage'
+import UsersPage from './UsersPage'
+import LendDetailPage from './LendDetailPage'
+import ActivityDetailPage from './ActivityDetailPage'
 import type { User } from './types'
 import './App.css'
 
@@ -36,9 +39,12 @@ export default function App() {
       >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="owner" element={<div  className="page-placeholder">Owners content goes here.</div>} />
+        <Route path="owner" element={<div className="page-placeholder">Owners content goes here.</div>} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="lend/:id" element={<LendDetailPage />} />
         <Route path="add" element={<div  className="page-placeholder">Add New content goes here.</div>} />
         <Route path="activity" element={<ActivityPage />} />
+        <Route path="activity/:id" element={<ActivityDetailPage />} />
         <Route path="profile" element={<ProfilePage user={user!} onLogout={handleLogout} />} />
       </Route>
       <Route path="*" element={<Navigate to="/login" replace />} />

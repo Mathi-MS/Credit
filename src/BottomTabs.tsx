@@ -17,8 +17,10 @@ const superadminTabs: Tab[] = [
 
 const ownerTabs: Tab[] = [
   { id: 'dashboard', label: 'Home',     icon: <LayoutDashboard size={22} /> },
+  { id: 'users',     label: 'Users',    icon: <Users size={22} /> },
   { id: 'add',       label: '',         icon: <Plus size={26} strokeWidth={2.5} /> },
   { id: 'activity',  label: 'Activity', icon: <Activity size={22} /> },
+  { id: 'profile',   label: 'Profile',  icon: <User size={22} /> },
 ]
 
 export default function BottomTabs({ role }: { role: Role }) {

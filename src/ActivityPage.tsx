@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
-import { LayoutGrid, Table2, X, Eye, SlidersHorizontal, XCircle, Pencil } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { LayoutGrid, Table2, Eye, SlidersHorizontal, XCircle, X } from 'lucide-react'
 import './ActivityPage.css'
 
 export interface Lend {
@@ -62,131 +63,12 @@ function StatusBadge({ status }: { status: Lend['status'] }) {
   )
 }
 
-/* ─── Edit + Detail Modal ─── */
-interface ModalProps { item: Lend; onClose: () => void; onSave: (updated: Lend) => void }
-
-function DetailModal({ item, onClose, onSave }: ModalProps) {
-  const [editing, setEditing] = useState(false)
-  const [form, setForm]       = useState<Lend>({ ...item })
-  const [confirm, setConfirm] = useState(false)
-
-  function set(key: keyof Lend, val: string) {
-    setForm(f => ({ ...f, [key]: key === 'amount' ? Number(val) : val === '' ? null : val }))
-  }
-
-  function handleSubmit() { setConfirm(true) }
-  function handleConfirm() { onSave(form); setConfirm(false); setEditing(false) }
-
-  return (
-    <div className="act-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="act-modal">
-
-        {/* header */}
-        <div className="act-modal-head">
-          <div className="act-modal-avatar">{item.name.split(' ').map(w => w[0]).join('').slice(0,2)}</div>
-          <div className="act-modal-head-text">
-            <div className="act-modal-name">{item.name}</div>
-            <StatusBadge status={form.status} />
-          </div>
-          <div className="act-modal-head-actions">
-            <button className="act-edit-toggle" onClick={() => setEditing(e => !e)}>
-              <Pencil size={14} />
-              {editing ? 'Cancel Edit' : 'Edit'}
-            </button>
-            <button className="act-modal-close" onClick={onClose}><X size={18} /></button>
-          </div>
-        </div>
-
-        {/* body */}
-        <div className="act-modal-body">
-          {editing ? (
-            <div className="act-edit-form">
-              {([
-                { key: 'name',         label: 'Name',          type: 'text'   },
-                { key: 'mobile',       label: 'Mobile',        type: 'tel'    },
-                { key: 'aadhar',       label: 'Aadhar',        type: 'text'   },
-                { key: 'amount',       label: 'Amount (₹)',    type: 'number' },
-                { key: 'endDate',      label: 'End Date',      type: 'date'   },
-                { key: 'extendedDate', label: 'Extended Date', type: 'date'   },
-                { key: 'remarks',      label: 'Remarks',       type: 'text'   },
-              ] as { key: keyof Lend; label: string; type: string }[]).map(({ key, label, type }) => (
-                <div className="act-form-field" key={key}>
-                  <label className="act-form-label">{label}</label>
-                  <input
-                    className="act-form-input"
-                    type={type}
-                    value={(form[key] ?? '') as string}
-                    onChange={e => set(key, e.target.value)}
-                  />
-                </div>
-              ))}
-
-              <div className="act-form-field">
-                <label className="act-form-label">Status</label>
-                <select
-                  className="act-form-input act-form-select"
-                  value={form.status}
-                  onChange={e => setForm(f => ({ ...f, status: e.target.value as Lend['status'] }))}
-                >
-                  <option value="pending">Pending</option>
-                  <option value="returned">Returned</option>
-                  <option value="overdue">Overdue</option>
-                </select>
-              </div>
-
-              <button className="act-submit-btn" onClick={handleSubmit}>Submit</button>
-            </div>
-          ) : (
-            <>
-              {([
-                ['Mobile',        item.mobile],
-                ['Aadhar',        item.aadhar],
-                ['Amount',        `₹${item.amount.toLocaleString('en-IN')}`],
-                ['End Date',      item.endDate],
-                ['Extended Date', item.extendedDate ?? '—'],
-                ['Remarks',       item.remarks],
-                ['Status',        item.status],
-              ] as [string, string][]).map(([label, value]) => (
-                <div className="act-detail-row" key={label}>
-                  <span className="act-detail-label">{label}</span>
-                  {label === 'Status'
-                    ? <StatusBadge status={value as Lend['status']} />
-                    : <span className="act-detail-value">{value}</span>
-                  }
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* confirm dialog */}
-      {confirm && (
-        <div className="act-confirm-overlay" onClick={e => e.stopPropagation()}>
-          <div className="act-confirm-box">
-            <p className="act-confirm-msg">Are you sure you want to save the changes?</p>
-            <div className="act-confirm-actions">
-              <button className="act-confirm-cancel" onClick={() => setConfirm(false)}>Cancel</button>
-              <button className="act-confirm-ok" onClick={handleConfirm}>OK, Save</button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
-
 /* ─── Filter Sheet ─── */
 interface FilterState { status: string; name: string; fromDate: string; toDate: string }
 const EMPTY_FILTER: FilterState = { status: '', name: '', fromDate: '', toDate: '' }
+function isFiltered(f: FilterState) { return !!(f.status || f.name || f.fromDate || f.toDate) }
 
-function isFiltered(f: FilterState) {
-  return !!(f.status || f.name || f.fromDate || f.toDate)
-}
-
-interface FilterSheetProps { filters: FilterState; onApply: (f: FilterState) => void; onClose: () => void }
-
-function FilterSheet({ filters, onApply, onClose }: FilterSheetProps) {
+function FilterSheet({ filters, onApply, onClose }: { filters: FilterState; onApply: (f: FilterState) => void; onClose: () => void }) {
   const [local, setLocal] = useState<FilterState>({ ...filters })
   function set(key: keyof FilterState, val: string) { setLocal(f => ({ ...f, [key]: val })) }
 
@@ -220,7 +102,7 @@ function FilterSheet({ filters, onApply, onClose }: FilterSheetProps) {
             <input className="act-form-input" type="date" value={local.toDate} onChange={e => set('toDate', e.target.value)} />
           </div>
           <div className="act-filter-actions">
-            <button className="act-confirm-cancel" onClick={() => { setLocal(EMPTY_FILTER) }}>Reset</button>
+            <button className="act-confirm-cancel" onClick={() => setLocal(EMPTY_FILTER)}>Reset</button>
             <button className="act-submit-btn" style={{ flex: 1 }} onClick={() => { onApply(local); onClose() }}>Apply</button>
           </div>
         </div>
@@ -231,26 +113,24 @@ function FilterSheet({ filters, onApply, onClose }: FilterSheetProps) {
 
 /* ─── Main Page ─── */
 export default function ActivityPage() {
-  const [data, setData]         = useState<Lend[]>(INITIAL)
-  const [view, setView]         = useState<'table' | 'card'>('card')
-  const [selected, setSelected] = useState<Lend | null>(null)
+  const navigate = useNavigate()
+  const [view, setView]             = useState<'table' | 'card'>('card')
   const [showFilter, setShowFilter] = useState(false)
-  const [filters, setFilters]   = useState<FilterState>(EMPTY_FILTER)
+  const [filters, setFilters]       = useState<FilterState>(EMPTY_FILTER)
 
-  function handleSave(updated: Lend) {
-    setData(d => d.map(x => x.id === updated.id ? updated : x))
-    setSelected(updated)
-  }
-
-  const filtered = useMemo(() => data.filter(item => {
+  const filtered = useMemo(() => INITIAL.filter(item => {
     if (filters.status && item.status !== filters.status) return false
     if (filters.name && !item.name.toLowerCase().includes(filters.name.toLowerCase())) return false
     if (filters.fromDate && item.endDate < filters.fromDate) return false
     if (filters.toDate   && item.endDate > filters.toDate)   return false
     return true
-  }), [data, filters])
+  }), [filters])
 
   const active = isFiltered(filters)
+
+  function goDetail(item: Lend) {
+    navigate(`/app/activity/${item.id}`, { state: { item } })
+  }
 
   return (
     <div className="act-wrap">
@@ -258,7 +138,7 @@ export default function ActivityPage() {
         <span className="act-title">Activity</span>
         <div className="act-topbar-right">
           {active && (
-            <button className="act-filter-clear" onClick={() => setFilters(EMPTY_FILTER)} title="Clear filters">
+            <button className="act-filter-clear" onClick={() => setFilters(EMPTY_FILTER)}>
               <XCircle size={18} />
             </button>
           )}
@@ -275,8 +155,8 @@ export default function ActivityPage() {
 
       {active && (
         <div className="act-filter-chips">
-          {filters.name   && <span className="act-chip">Name: {filters.name}</span>}
-          {filters.status && <span className="act-chip">Status: {filters.status}</span>}
+          {filters.name     && <span className="act-chip">Name: {filters.name}</span>}
+          {filters.status   && <span className="act-chip">Status: {filters.status}</span>}
           {filters.fromDate && <span className="act-chip">From: {filters.fromDate}</span>}
           {filters.toDate   && <span className="act-chip">To: {filters.toDate}</span>}
           <span className="act-chip act-chip--count">{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
@@ -286,7 +166,7 @@ export default function ActivityPage() {
       {view === 'card' ? (
         <div className="act-card-grid">
           {filtered.map(item => (
-            <div className="act-card" key={item.id} onClick={() => setSelected(item)}>
+            <div className="act-card" key={item.id} onClick={() => goDetail(item)}>
               <div className="act-card-top">
                 <div className="act-card-avatar">{item.name.split(' ').map(w => w[0]).join('').slice(0,2)}</div>
                 <div className="act-card-info">
@@ -334,7 +214,7 @@ export default function ActivityPage() {
                   <td>{item.extendedDate ?? '—'}</td>
                   <td><StatusBadge status={item.status} /></td>
                   <td>
-                    <button className="act-view-btn" onClick={() => setSelected(item)}><Eye size={15} /></button>
+                    <button className="act-view-btn" onClick={() => goDetail(item)}><Eye size={15} /></button>
                   </td>
                 </tr>
               ))}
@@ -346,7 +226,6 @@ export default function ActivityPage() {
         </div>
       )}
 
-      {selected && <DetailModal item={selected} onClose={() => setSelected(null)} onSave={handleSave} />}
       {showFilter && <FilterSheet filters={filters} onApply={setFilters} onClose={() => setShowFilter(false)} />}
     </div>
   )
