@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { X, CheckCircle } from 'lucide-react'
+import { X, } from 'lucide-react'
 import './AddLendModal.css'
 
 interface Props { onClose: () => void }
