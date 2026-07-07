@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { LayoutDashboard, Users, Plus, Activity, User } from 'lucide-react'
 import type { Role } from './types'
+import AddLendModal from './AddLendModal'
 import './BottomTabs.css'
 
 interface Tab { id: string; label: string; icon: React.ReactNode }
@@ -24,15 +25,19 @@ export default function BottomTabs({ role }: { role: Role }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const [ripple, setRipple] = useState<string | null>(null)
+  const [showModal, setShowModal] = useState(false)
   const tabs = role === 'superadmin' ? superadminTabs : ownerTabs
 
   function handleTap(id: string) {
+    if (id === 'add') { setShowModal(true); return }
     setRipple(id)
     setTimeout(() => setRipple(null), 400)
     navigate(`/app/${id}`)
   }
 
   return (
+    <>
+    {showModal && <AddLendModal onClose={() => setShowModal(false)} />}
     <nav className="bottom-tabs">
       {tabs.map(tab =>
         tab.id === 'add' ? (
@@ -58,5 +63,6 @@ export default function BottomTabs({ role }: { role: Role }) {
         )
       )}
     </nav>
+    </>
   )
 }

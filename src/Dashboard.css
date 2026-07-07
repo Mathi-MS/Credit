@@ -163,3 +163,217 @@
   color: hsl(var(--muted-foreground));
   margin: 0;
 }
+
+/* ══════════════════════════════
+   DASHBOARD
+══════════════════════════════ */
+.db-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 100px;
+}
+
+/* greeting row */
+.db-greeting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.db-greeting-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: hsl(var(--foreground));
+}
+.db-greeting-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted));
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* ── stat cards ── */
+.db-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.db-stat {
+  border-radius: 16px;
+  padding: 14px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.db-stat.total    { background: linear-gradient(135deg,#e8f5e9,#f1f8e9); border: 1px solid #a5d6a7; }
+.db-stat.received { background: linear-gradient(135deg,#e3f2fd,#e8f5e9); border: 1px solid #90caf9; }
+.db-stat.pending  { background: linear-gradient(135deg,#fff8e1,#fff3e0); border: 1px solid #ffcc80; }
+
+.db-stat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+}
+
+.db-stat.total    .db-stat-icon { background: #22c55e22; color: #16a34a; }
+.db-stat.received .db-stat-icon { background: #3b82f622; color: #2563eb; }
+.db-stat.pending  .db-stat-icon { background: #f59e0b22; color: #d97706; }
+
+.db-stat-val {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.db-stat.total    .db-stat-val { color: #16a34a; }
+.db-stat.received .db-stat-val { color: #2563eb; }
+.db-stat.pending  .db-stat-val { color: #d97706; }
+
+.db-stat-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #555;
+}
+
+/* ── section card ── */
+.db-section-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px hsl(0 0% 0% / 0.05);
+}
+
+.db-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px;
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--muted) / 0.4);
+}
+
+.db-sec-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--sec-accent) 12%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.db-sec-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.db-sec-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.db-sec-sub {
+  font-size: 11px;
+  color: hsl(var(--muted-foreground));
+}
+
+.db-sec-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--sec-accent);
+  border-radius: 20px;
+  padding: 3px 10px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.db-empty {
+  font-size: 13px;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+/* ── scroll list ── */
+.lend-scroll {
+  max-height: 275px;
+  overflow-y: auto;
+}
+
+.lend-scroll::-webkit-scrollbar { width: 3px; }
+.lend-scroll::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
+
+/* ── lend row ── */
+.lend-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.lend-row:last-child { border-bottom: none; }
+
+.lend-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.1));
+  color: hsl(var(--primary));
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid hsl(var(--primary) / 0.25);
+}
+
+.lend-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lend-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lend-mobile {
+  font-size: 11px;
+  color: hsl(var(--muted-foreground));
+}
+
+.lend-amount {
+  font-size: 13px;
+  font-weight: 700;
+  color: hsl(var(--primary));
+  white-space: nowrap;
+}
