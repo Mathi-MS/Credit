@@ -1,0 +1,165 @@
+.dash-wrapper {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--sans);
+  transition: background 0.3s, color 0.3s;
+}
+
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: hsl(var(--card));
+  border-bottom: 1px solid hsl(var(--border));
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.dash-logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.dash-drop-wrap {
+  position: relative;
+}
+
+.dash-avatar-btn {
+  background: hsl(var(--muted));
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+}
+
+.dash-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid hsl(var(--border));
+  transition: box-shadow 0.2s;
+
+  &:hover { box-shadow: 0 0 0 3px hsl(var(--primary) / 0.3); }
+}
+
+.dash-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 190px;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 14px;
+  box-shadow: 0 8px 24px hsl(0 0% 0% / 0.12);
+  overflow: hidden;
+  z-index: 100;
+  animation: dropFade 0.15s ease;
+}
+
+@keyframes dropFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.drop-user {
+  padding: 12px 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drop-username {
+  font-size: 14px;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.drop-role {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: hsl(var(--primary));
+}
+
+.drop-divider {
+  height: 1px;
+  background: hsl(var(--border));
+  margin: 2px 0;
+}
+
+.drop-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: background 0.15s;
+
+  &:hover { background: hsl(var(--muted)); }
+}
+
+.drop-item--danger {
+  color: hsl(0 84% 60%);
+}
+
+.dash-shop-bar {
+  background: hsl(var(--primary) / 0.08);
+  padding: 6px 20px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.dash-shop-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  letter-spacing: 0.03em;
+}
+
+.dash-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dash-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.dash-main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0 0 8px;
+}
+
+.page-placeholder {
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+  margin: 0;
+}

@@ -1,0 +1,142 @@
+.bottom-tabs {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: hsl(var(--card));
+  border-top: 1px solid hsl(var(--border));
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding: 0 8px 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  z-index: 100;
+  box-shadow: 0 -4px 24px hsl(0 0% 0% / 0.08);
+}
+
+/* ── regular tab ── */
+.tab-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: hsl(var(--muted-foreground));
+  padding: 0;
+  position: relative;
+  transition: color 0.2s;
+
+  &.active {
+    color: hsl(var(--primary));
+  }
+}
+
+/* floating icon bubble */
+.tab-float {
+  position: relative;
+  width: 44px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+}
+
+.tab-btn.active .tab-float {
+  transform: translateY(-8px);
+  background: hsl(var(--primary) / 0.12);
+}
+
+.tab-icon {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tab-btn.active .tab-icon {
+  transform: scale(1.15);
+}
+
+/* ripple on tap */
+.tab-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: hsl(var(--primary) / 0.2);
+  animation: ripple-burst 0.4s ease forwards;
+}
+
+@keyframes ripple-burst {
+  from { opacity: 1; transform: scale(0.6); }
+  to   { opacity: 0; transform: scale(1.6); }
+}
+
+/* dot indicator */
+.tab-dot {
+  position: absolute;
+  bottom: -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: hsl(var(--primary));
+  animation: dot-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes dot-pop {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+.tab-label {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--sans);
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s, transform 0.2s;
+  opacity: 0.5;
+}
+
+.tab-btn.active .tab-label {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* ── FAB ── */
+.tab-fab {
+  flex: 0 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.fab-inner {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, hsl(142.1 70.6% 36%), hsl(142.1 70.6% 52%));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 16px hsl(142.1 70.6% 45% / 0.55),
+    0 0 0 5px hsl(142.1 70.6% 45% / 0.1);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+}
+
+.tab-fab:active .fab-inner {
+  transform: scale(0.9) rotate(45deg);
+  box-shadow: 0 2px 8px hsl(142.1 70.6% 45% / 0.4);
+}
