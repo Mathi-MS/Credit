@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { Bell, User, LogOut } from 'lucide-react'
 import BottomTabs from './BottomTabs'
-import ThemeToggle from './ThemeToggle'
+// import ThemeToggle from './ThemeToggle'
 import { images } from './assets/Images/Images'
 import type { User as UserType } from './types'
 import './Dashboard.css'
@@ -14,21 +14,21 @@ interface Props {
 
 export default function Layout({ user, onLogout }: Props) {
   const [dropOpen, setDropOpen] = useState(false)
-  const [dark, setDark] = useState(() => {
-    const saved = localStorage.getItem('theme')
-    const isDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
-    document.documentElement.classList.toggle('dark', isDark)
-    return isDark
-  })
+  // const [dark, setDark] = useState(() => {
+  //   const saved = localStorage.getItem('theme')
+  //   const isDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches
+  //   document.documentElement.classList.toggle('dark', isDark)
+  //   return isDark
+  // })
   const dropRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  function toggleTheme() {
-    const isDark = !dark
-    setDark(isDark)
-    document.documentElement.classList.toggle('dark', isDark)
-    localStorage.setItem('theme', isDark ? 'dark' : 'light')
-  }
+  // function toggleTheme() {
+  //   const isDark = !dark
+  //   setDark(isDark)
+  //   document.documentElement.classList.toggle('dark', isDark)
+  //   localStorage.setItem('theme', isDark ? 'dark' : 'light')
+  // }
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
